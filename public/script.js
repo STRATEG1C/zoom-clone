@@ -19,6 +19,10 @@ navigator.mediaDevices.getUserMedia({
     myVideoStream = stream;
     addVideoStream(myVideo, stream);
 
+    peer.on('open', id => {
+        socket.emit('join-room', ROOM_ID, id);
+    });
+
     peer.on('call', call => {
         call.answer(stream);
         const video = document.createElement('video');
@@ -45,10 +49,6 @@ navigator.mediaDevices.getUserMedia({
     socket.on('createMessage', message => {
         $('.messages').append(`<li class="message"><b>user</b><br/>${message}</li>`);
         scrollToBottom();
-    });
-
-    peer.on('open', id => {
-        socket.emit('join-room', ROOM_ID, id);
     });
 });
 
