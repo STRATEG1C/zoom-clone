@@ -12,46 +12,6 @@ let peer = new Peer(undefined, {
 
 let myVideoStream;
 
-navigator.mediaDevices.getUserMedia({
-    video: true,
-    audio: true,
-}).then(stream => {
-    myVideoStream = stream;
-    addVideoStream(myVideo, stream);
-
-    peer.on('open', id => {
-        socket.emit('join-room', ROOM_ID, id);
-    });
-
-    peer.on('call', call => {
-        call.answer(stream);
-        const video = document.createElement('video');
-        call.on('stream', userVideoStream => {
-            addVideoStream(video, userVideoStream);
-        });
-    });
-
-    socket.on('user-connected', (userId) => {
-        console.log(userId);
-        connectToNewUser(userId, stream);
-    });
-
-    let text = $('input');
-
-    $('html').keydown((e) => {
-        if (e.which === 13 && text.val().length !== 0) {
-            console.log(text);
-            socket.emit('message', text.val());
-            text.val('');
-        }
-    })
-
-    socket.on('createMessage', message => {
-        $('.messages').append(`<li class="message"><b>user</b><br/>${message}</li>`);
-        scrollToBottom();
-    });
-});
-
 const connectToNewUser = (userId, stream) => {
     const call = peer.call(userId, stream);
     const video = document.createElement('video');
@@ -141,3 +101,43 @@ const openHideChat = () => {
 if (window.innerWidth < 1000) {
     openHideChat();
 }
+
+navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: true,
+}).then(stream => {
+    myVideoStream = stream;
+    addVideoStream(myVideo, stream);
+
+    peer.on('open', id => {
+        socket.emit('join-room', ROOM_ID, id);
+    });
+
+    peer.on('call', call => {
+        call.answer(stream);
+        const video = document.createElement('video');
+        call.on('stream', userVideoStream => {
+            addVideoStream(video, userVideoStream);
+        });
+    });
+
+    socket.on('user-connected', (userId) => {
+        console.log(userId);
+        connectToNewUser(userId, stream);
+    });
+
+    let text = $('input');
+
+    $('html').keydown((e) => {
+        if (e.which === 13 && text.val().length !== 0) {
+            console.log(text);
+            socket.emit('message', text.val());
+            text.val('');
+        }
+    })
+
+    socket.on('createMessage', message => {
+        $('.messages').append(`<li class="message"><b>user</b><br/>${message}</li>`);
+        scrollToBottom();
+    });
+});
