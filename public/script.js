@@ -46,10 +46,10 @@ navigator.mediaDevices.getUserMedia({
         $('.messages').append(`<li class="message"><b>user</b><br/>${message}</li>`);
         scrollToBottom();
     });
-});
 
-peer.on('open', id => {
-    socket.emit('join-room', ROOM_ID, id);
+    peer.on('open', id => {
+        socket.emit('join-room', ROOM_ID, id);
+    });
 });
 
 const connectToNewUser = (userId, stream) => {
