@@ -7,7 +7,7 @@ myVideo.muted = true;
 let peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '3030'
 });
 
 let myVideoStream;
@@ -28,6 +28,7 @@ navigator.mediaDevices.getUserMedia({
     });
 
     socket.on('user-connected', (userId) => {
+        console.log(userId);
         connectToNewUser(userId, stream);
     });
 
@@ -126,4 +127,17 @@ const setStopVideo = () => {
         <span>Stop Video</span>
     `
     document.querySelector('.main__video_button').innerHTML = html;
+}
+
+const openHideChat = () => {
+    const chatArea = document.querySelector('.main__right');
+    if (chatArea.classList.contains('hidden')) {
+        chatArea.classList.remove('hidden');
+    } else {
+        chatArea.classList.add('hidden');
+    }
+}
+
+if (window.innerWidth < 1000) {
+    openHideChat();
 }

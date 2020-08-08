@@ -6,12 +6,14 @@ body {
 #video-grid {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 video {
     height: 300px;
     width: 400px;
     object-fit: cover;
+    padding: 3px;
 }
 
 .main {
@@ -19,8 +21,12 @@ video {
     display: flex;
 }
 
+.main__header {
+    padding: 20px;
+}
+
 .main__left {
-    flex: 0.8;
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
@@ -74,6 +80,11 @@ video {
     flex-direction: column;
     background-color: #242324;
     border-left: 1px solid #3D3D42;
+    transition: ease all .2s;
+}
+
+.main__right.hidden {
+    display: none;
 }
 
 .main__header {
@@ -83,7 +94,7 @@ video {
 
 .main__chat_window {
     flex-grow: 1;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 .main__message_container {
