@@ -4,10 +4,12 @@ const videoGrid = document.getElementById('video-grid');
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 
+let myVideoStream;
+
 let peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '3030'
 });
 
 navigator.mediaDevices.getUserMedia({
@@ -18,6 +20,7 @@ navigator.mediaDevices.getUserMedia({
     addVideoStream(myVideo, stream);
 
     peer.on('open', id => {
+        console.log(id);
         socket.emit('join-room', ROOM_ID, id);
     });
 
@@ -49,8 +52,6 @@ navigator.mediaDevices.getUserMedia({
         scrollToBottom();
     });
 });
-
-let myVideoStream;
 
 const connectToNewUser = (userId, stream) => {
     const call = peer.call(userId, stream);
@@ -115,7 +116,7 @@ const playStop = () => {
 
 const setPlayVideo = () => {
     const html = `
-        <i class="fas fa-video"></i>
+        <i class="stop fas fa-video-slash"></i>
         <span>Play Video</span>
     `
     document.querySelector('.main__video_button').innerHTML = html;
@@ -123,7 +124,7 @@ const setPlayVideo = () => {
 
 const setStopVideo = () => {
     const html = `
-        <i class="stop fas fa-video-slash"></i>
+        <i class="fas fa-video"></i>
         <span>Stop Video</span>
     `
     document.querySelector('.main__video_button').innerHTML = html;
